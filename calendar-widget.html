@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notion Cute Calendar Widget</title>
+  <style>
+    :root {
+      --bg-light: #f7f1e6; /* cream */
+      --text-light: #4b3b2a; /* chocolate text */
+      --accent-light: #8b5e3c; /* cocoa */
+
+      --bg-dark: #3b2a21; /* chocolate brown */
+      --text-dark: #f3e9dc; /* cream text */
+      --accent-dark: #d6b89c; /* latte */
+    }
+
+    body {
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+    }
+
+    .calendar {
+      width: 260px;
+      padding: 16px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .header {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .weekdays,
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+    }
+
+    .weekdays div {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+
+    .days div {
+      padding: 8px 0;
+      font-size: 0.85rem;
+      border-radius: 50%;
+    }
+
+    .today {
+      border: 2px solid currentColor;
+      font-weight: bold;
+    }
+
+    /* Light mode */
+    @media (prefers-color-scheme: light) {
+      .calendar {
+        background: var(--bg-light);
+        color: var(--text-light);
+      }
+
+      .today {
+        color: var(--accent-light);
+      }
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .calendar {
+        background: var(--bg-dark);
+        color: var(--text-dark);
+      }
+
+      .today {
+        color: var(--accent-dark);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calendar">
+    <div class="header" id="monthYear"></div>
+    <div class="weekdays">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+    <div class="days" id="days"></div>
+  </div>
+
+  <script>
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    document.getElementById("monthYear").textContent = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const daysContainer = document.getElementById("days");
+
+    for (let i = 0; i < firstDay; i++) {
+      daysContainer.appendChild(document.createElement("div"));
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayEl = document.createElement("div");
+      dayEl.textContent = d;
+      if (d === today) {
+        dayEl.classList.add("today");
+      }
+      daysContainer.appendChild(dayEl);
+    }
+  </script>
+</body>
+</html>
